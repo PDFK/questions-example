@@ -1,18 +1,19 @@
 import React from 'react';
 import Select from 'react-select'
-import KillerConditionSelect from './killer_condition_select';
-import KillerValueInput from './killer_value_input';
-import InputError from './error';
+import KillerConditionSelect from './killer_condition_select.jsx';
+import KillerValueInput from './killer_value_input.jsx';
+import InputError from './error.jsx';
 
 class QuestionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value_type: props.question.value_type,
-      description: props.question.description
+      description: props.question.description,
     };
+    this.killervalueinputElement = React.createRef();
     this.handleDelete = this.handleDelete.bind(this)
-    this.handleKillerCondition = this.handleKillerCondition.bind(this)
+    this.handleValueType = this.handleValueType.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
   }
 
@@ -40,12 +41,13 @@ class QuestionForm extends React.Component {
     }) || [];
 
     return (
-      <Select options={options} onChange={ this.handleKillerCondition } value={ value } className="" />
+      <Select options={options} onChange={ this.handleValueType } value={ value } className="" />
     )
   }
 
-  handleKillerCondition(selectedOption) {
+  handleValueType(selectedOption) {
     const option = selectedOption.value;
+    this.killervalueinputElement.current.handleKillerValueChange("");
     this.setState({value_type: option});
   }
 
@@ -64,7 +66,7 @@ class QuestionForm extends React.Component {
   drawKillerValue() {
     const name = this.props.name;
     return(
-      <KillerValueInput t={ this.props.t } selected_option={ this.state.value_type } question={ this.props.question } name={ name } />
+      <KillerValueInput t={ this.props.t } ref={ this.killervalueinputElement } selected_option={ this.state.value_type } question={ this.props.question } name={ name } />
     )
   }
 
@@ -92,7 +94,7 @@ class QuestionForm extends React.Component {
         { this.drawKillerValue() }
         <div className="col-sm-1">
           <a href="javascript:void(0);" className="" onClick={ this.handleDelete }>
-            <i className="fas fa-trash-alt mt-5">borrar</i>
+            <i className="fas fa-trash-alt mt-5" alt="borrar"></i>
           </a>
         </div>
         <hr/>

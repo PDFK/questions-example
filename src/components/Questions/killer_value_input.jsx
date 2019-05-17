@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select'
 import CreatableSelect from 'react-select/lib/Creatable';
 import CurrencyInput from 'react-currency-input';
-import InputError from './error';
+import InputError from './error.jsx';
 
 class KillerValueInput extends React.Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class KillerValueInput extends React.Component {
     this.handleOptionsChange = this.handleOptionsChange.bind(this);
     this.handleKillerValueChange = this.handleKillerValueChange.bind(this);
     this.validOptions = this.validOptions.bind(this);
+    this.handleInputRangeChange = this.handleInputRangeChange.bind(this);
   }
 
   drawKillerValue() {
@@ -33,7 +34,13 @@ class KillerValueInput extends React.Component {
       case "currency":
         return <CurrencyInput value={ value } precision="0" prefix="$" thousandSeparator="." onChangeEvent={this.handleInputChange} className="form-control" name={ `${name}[killer_value]` } />
       case "range":
-          return <input onChange={ this.handleInputChange } value={ value } className="form-control" type="text" pattern="^\d+,\d+$" name={ `${name}[killer_value]` } />
+          return (
+          <div  style={ customStyles }>
+            <input onChange={ this.handleInputRangeChange } data-edge="initial" value={ value[0] } className="form-control" type="number" min="0" placeholder={ t("questions.html_helpers.range_option.initial") } />
+            <input onChange={ this.handleInputRangeChange } data-edge="final" value={ value[1] } className="form-control" type="number" min={ value[0] } placeholder={ t("questions.html_helpers.range_option.final") } />
+            <input type="hidden" name={ `${name}[killer_value]` } value={ value }/>
+          </div>
+          )
       case "boolean":
           return (
             <div style={ customStyles }>
@@ -74,6 +81,15 @@ class KillerValueInput extends React.Component {
   handleInputChange(event) {
     let input = event.target;
     this.setState({killer_value: input.value});
+  }
+
+  handleInputRangeChange(event) {
+    let killer_value = this.state.killer_value;
+    const input = event.target;
+    const edge = event.target.getAttribute("data-edge") == "initial" ? 0 : 1;
+
+    killer_value[edge] = input.value;
+    this.setState({killer_value: killer_value});
   }
 
   handleOptionsChange(value) {

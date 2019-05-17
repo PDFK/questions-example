@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select'
-import InputError from './error';
+import InputError from './error.jsx';
 
 class KillerConditionSelect extends React.Component {
   constructor(props) {

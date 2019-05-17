@@ -43,6 +43,10 @@
       "boolean_option": {
         "positive": "Yes",
         "negative": "No"
+      },
+      "range_option": {
+        "initial": "Initial value",
+        "final": "Final value"
       }
     },
     "attributes": {

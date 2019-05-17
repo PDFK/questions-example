@@ -1,5 +1,5 @@
 import React from 'react';
-import QuestionForm from './form';
+import QuestionForm from './form.jsx';
 
 class MultipleForm extends React.Component {
   constructor(props) {
@@ -92,6 +92,9 @@ class MultipleForm extends React.Component {
           values = Array.isArray(killer_value) ? killer_value.map(function(item){
             return {value: item, label: item};
           }) : { value: killer_value, label: killer_value };
+          break;
+      case "range":
+          values = values.split(",");
           break;
       default:
           values;

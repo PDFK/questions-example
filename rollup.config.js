@@ -1,24 +1,27 @@
 import uglify from 'rollup-plugin-uglify'
-import json from 'rollup-plugin-json'
 import babel from 'rollup-plugin-babel'
-import pkg from './package.json'
+import json from 'rollup-plugin-json'
+// import postcss from 'rollup-plugin-postcss'
+// import postcssModules from 'postcss-modules'
+
+//const cssExportMap = {}
 
 const config = {
-    input: 'src/index.js',
-    // external: Object.keys(pkg.peerDependencies || {}).concat('react-dom'),
-    output: {
-        format: 'umd',
-        name: 'questions',
-        globals: {
-            react: "React"
-        }
-    },
+    input: 'src/App.js',
+    external: ['react'],
     plugins: [
         json(),
         babel({
             exclude: "node_modules/**"
         }),
-        uglify.uglify()
+        uglify()
     ],
+    output: {
+        format: 'umd',
+        name: 'Questions',
+        globals: {
+            react: "React"
+        }
+    }
 }
 export default config
